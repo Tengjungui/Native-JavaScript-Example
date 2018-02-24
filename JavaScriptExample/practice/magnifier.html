@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>放大镜效果</title>
+    <style>
+        figure{
+            width:310px;
+            height:310px;
+            border:1px solid #000;
+            float:left;
+            margin-right:20px;
+            position:relative;
+            top:0;
+            left:0;}
+        #b{
+            overflow:hidden;
+            display:none;}
+        #mask{
+            position:absolute;
+            top:0;
+            left:0;
+            width:100px;
+            height:100px;
+            background:yellow;
+            opacity:0.3;
+            display:none;
+            cursor: move;
+            border: 1px solid #555555;
+       }
+        #b img{
+            position:absolute;
+            top:0;
+            left:0;}
+    </style>
+    <script>
+        window.onload = function(){
+            var oM = document.getElementById("m");
+            var oMask = document.getElementById("mask");
+            var oB = document.getElementById("b");
+            var oImg = oB.getElementsByTagName("img")[0];
+
+            oM.onmouseover = function(){
+                oMask.style.display = "block";
+                oB.style.display = "block";
+            };
+            oM.onmouseout = function(){
+                oMask.style.display = "none";
+                oB.style.display = "none";
+            };
+
+            oM.onmousemove = function(ev){
+                var oEvent = ev ||event;
+                var l = oEvent.clientX - oM.offsetLeft - oMask.offsetWidth / 2;
+                var t = oEvent.clientY - oM.offsetTop - oMask.offsetWidth / 2;
+
+                if(l < 0){
+                    l = 0;
+                }else if(l > oM.offsetWidth - oMask.offsetWidth){
+                    l = oM.offsetWidth - oMask.offsetWidth;
+                }
+
+                if(t < 0){
+                    t = 0;
+                }else if(t > oM.offsetHeight - oMask.offsetHeight){
+                    t = oM.offsetHeight - oMask.offsetHeight;
+                }
+
+                oMask.style.left = l + "px";
+                oMask.style.top = t + "px";
+
+                oImg.style.left = -l /(oM.offsetWidth - oMask.offsetWidth) * (oImg.offsetWidth - oB.offsetWidth) + "px";
+                oImg.style.top = -t / (oM.offsetHeight - oMask.offsetHeight) * (oImg.offsetHeight - oB.offsetHeight) + "px";
+            }
+        }
+    </script>
+</head>
+<body>
+    <figure id="m">
+        <img src="img/m1.jpg" />
+        <span id="mask"></span>
+    </figure>
+    <figure id="b">
+        <img src="img/b1.jpg" />
+    </figure>
+</body>
+</html>

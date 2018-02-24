@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>图片轮换</title>
+    <style>
+        body {
+            background: #666; }
+        ul {
+            padding: 0;
+            margin: 0; }
+        li {
+            list-style: none; }
+        img {
+            border: 0; }
+
+        .play {
+            width: 400px;
+            height: 430px;
+            margin: 50px auto 0;
+            background: #999;
+            font: 12px Arial; }
+
+        .big_pic {
+            width: 400px;
+            height: 320px;
+            overflow: hidden;
+            border-bottom: 1px solid #ccc;
+            background: #222;
+            position: relative; }
+        .big_pic li {
+            width: 400px;
+            height: 320px;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            background: url(xiaomi/loading.gif) no-repeat center center; }
+
+        .mark_left {
+            width: 200px;
+            height: 320px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: red;
+            opacity:0;
+            z-index:3000; }
+        .mark_right {
+            width: 200px;
+            height: 320px;
+            position: absolute;
+            left: 200px;
+            top: 0;
+            background: green;
+            opacity: 0;
+            z-index:3000; }
+        .big_pic .prev {
+            width: 60px;
+            height: 60px;
+            background: url(xiaomi/btn.gif) no-repeat;
+            position: absolute;
+            top: 130px;
+            left: 10px;
+            z-index: 3001;
+            display: none;
+            cursor: pointer; }
+        .big_pic .next {
+            width: 60px;
+            height: 60px;
+            background: url(xiaomi/btn.gif) no-repeat 0 -60px;
+            position: absolute;
+            top: 130px;
+            right: 10px;
+            z-index: 3001;
+            display: none;
+            cursor: pointer; }
+
+
+        .small_pic {
+            width: 380px;
+            height: 94px;
+            position: relative;
+            top: 7px;
+            left: 10px;
+            overflow: hidden;}
+        .small_pic ul {
+            height: 94px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            float: left;
+        }
+        .small_pic li {
+            width: 120px;
+            height: 94px;
+            float: left;
+            padding-right: 10px;
+            background: url(xiaomi/loading.gif) no-repeat center center;
+            cursor: pointer;
+            opacity: 0.6;
+            }
+        .small_pic img {
+            width: 120px;
+            height: 94px; }
+    </style>
+    <script>
+        function getStyle(obj, name)
+        {
+            if(obj.currentStyle)
+            {
+                return obj.currentStyle[name];
+            }
+            else
+            {
+                return getComputedStyle(obj, false)[name];
+            }
+        }
+
+        function startMove(obj,attr,target){
+            clearInterval(obj.timer);
+
+            obj.timer = setInterval(function(){
+                var current;
+                if(attr == "opacity"){
+                    //IE下opacity无法使用，filter
+                    current = Math.round(parseFloat(getStyle(obj,"opacity"))*100);//考虑到float运算
+                }
+                else{
+                    current = parseInt(getStyle(obj,attr));
+                    //alert("aa");
+                }
+
+                var speed = (target - current) / 6;
+                //对speed取整
+                speed = (speed > 0 ? Math.ceil(speed) : Math.floor(speed));
+                if(current == target){
+                    clearInterval(obj.timer);
+                }
+                else{
+                    //继续执行
+                    if(attr == "opacity"){
+                        obj.style.opacity = (current + speed) / 100;
+                        //兼容IE
+                        obj.style.filter='alpha(opacity:'+(current + speed)+')';
+                    }
+                    else{
+                        //不要忘记 +px
+                        obj.style[attr]= current + speed + "px";
+                        //alert("aa");
+                    }
+                }
+            },30);
+        }
+        function getByClass(oParent,name){
+            var aClass = oParent.getElementsByTagName("*");
+            var Element = [];
+            for(var i = 0;i < aClass.length; i++){
+                if(aClass[i].className == name){
+                    Element.push(aClass[i]);
+                }
+
+            }//end for
+            return Element;
+        }
+    window.onload = function(){
+        var playImg = document.getElementById("playimages");
+        var bigPic = getByClass(playImg,"big_pic")[0];
+        var smallPic = getByClass(playImg,"small_pic")[0];
+
+        var markLeft = getByClass(bigPic,"mark_left")[0];
+        var markRight = getByClass(bigPic,"mark_right")[0];
+
+        var oPrev = getByClass(bigPic,"prev")[0];
+        var oNext = getByClass(bigPic,"next")[0];
+
+        var bigLi = bigPic.getElementsByTagName("li");
+        var smallLi = smallPic.getElementsByTagName("li");
+        var oUl = smallPic.getElementsByTagName("ul")[0];
+
+        //按钮的显示与隐藏
+        oNext.onmouseover = markRight.onmouseover = function(){
+            oNext.style.display = "block";
+        };
+        oNext.onmouseout=markRight.onmouseout = function(){
+            oNext.style.display = "none";
+        };
+
+        oPrev.onmouseover = markLeft.onmouseover = function(){
+            oPrev.style.display = "block";
+            //alert(oPrev.style.display);
+        };
+        oPrev.onmouseout = markLeft.onmouseout = function(){
+            oPrev.style.display = "none";
+        };
+
+
+        //图片的下拉显示v
+        var now = 0;//当前显示的是第几张照片
+        var prev;
+        var picLength = smallLi.length;
+        for(var i = 0; i < picLength; i++){
+            smallLi[i].index = i;
+            //onlcick事件
+            smallLi[i].onclick = function(){
+
+                prev = now;
+                if(now == this.index) return;
+                now = this.index;
+//                for(var j = 0; j < picLength; j++){
+//                    bigLi[j].style.zIndex = 1;
+//                    smallLi[j].style.opacity = 0.6;
+//                }
+//                //prev = now;
+//                //bigLi[now].style.zIndex = 2;
+//                bigLi[prev].style.zIndex = 2;
+//                bigLi[now].style.zIndex = 3;
+//
+//                bigLi[now].style.height = "0px";
+//                startMove(bigLi[now],"height",320);
+//
+//                smallLi[now].style.opacity = 1;
+                  tab();
+            };//end onclick
+            //改变透明度
+            smallLi[i].onmouseover = function(){
+                startMove(this,"opacity",100);
+            };
+            smallLi[i].onmouseout = function(){
+                if(now != this.index) {
+                    startMove(this, "opacity", 60);
+                }
+            };
+
+        }//end for
+
+        //为按钮添加点击事件
+        oNext.onclick = function(){
+            prev = now;//保存上一步的now值
+
+            now++;
+
+            if(now >= picLength){
+                now = 0;
+            }
+
+            tab();
+        };
+        oPrev.onclick = function(){
+            prev = now;//保存上一步的now值
+
+            now--;
+
+            if(now < 0){
+                now = picLength - 1;// -1怎么忘了
+            }
+
+            tab();
+        };
+        var timer = setInterval(oNext.onclick,3000);
+        playImg.onmouseover = function(){
+            clearInterval(timer);
+        };
+        playImg.onmouseout = function(){
+            timer = setInterval(oNext.onclick,3000);
+        };
+
+        function tab(){
+            for(var j = 0; j < picLength; j++){
+                bigLi[j].style.zIndex = 1;
+                smallLi[j].style.opacity = 0.6;
+            }
+            bigLi[prev].style.zIndex = 2;
+            bigLi[now].style.zIndex = 3;
+
+            bigLi[now].style.height = "0px";
+            startMove(bigLi[now],"height",320);
+
+            smallLi[now].style.opacity = 1;
+            if(now == 0){
+                startMove(oUl,"left",0)
+            }
+            else if(now == picLength -1){
+                startMove(oUl,"left",-(now -2)*130);
+            }else{
+                startMove(oUl,"left",-(now -1)*130);
+            }
+        }//tab function
+    }
+    </script>
+</head>
+<body>
+<div id="playimages" class="play">
+    <ul class="big_pic">
+
+        <div class="prev"></div>
+        <div class="next"></div>
+
+        <a class="mark_left" href="javascript:;"></a>
+        <a class="mark_right" href="javascript:;"></a>
+
+        <li style="z-index:1;"><img src="xiaomi/1.jpg" /></li>
+        <li><img src="xiaomi/2.jpg" /></li>
+        <li><img src="xiaomi/3.jpg" /></li>
+        <li><img src="xiaomi/4.jpg" /></li>
+        <li><img src="xiaomi/5.jpg" /></li>
+        <li><img src="xiaomi/6.jpg" /></li>
+    </ul>
+    <div class="small_pic">
+        <ul style="width:780px;">
+            <li style="opacity: 1;"><img src="xiaomi/1.jpg" /></li>
+            <li><img src="xiaomi/2.jpg" /></li>
+            <li><img src="xiaomi/3.jpg" /></li>
+            <li><img src="xiaomi/4.jpg" /></li>
+            <li><img src="xiaomi/5.jpg" /></li>
+            <li><img src="xiaomi/6.jpg" /></li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

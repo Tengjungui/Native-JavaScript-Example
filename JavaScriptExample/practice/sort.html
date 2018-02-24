@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>排序</title>
+    <style>
+        div{
+            width:260px;
+            margin: 50px auto;
+        }
+    </style>
+    <script>
+        window.onload = function(){
+            var oBtn = document.getElementById("btn");
+            var oTable = document.getElementById("table");
+            var oRows = oTable.tBodies[0].rows;
+            var myRows = [];//存放row栏
+            //alert(oRows.length);
+            oBtn.onclick = function(){
+                for(var i =0; i < oRows.length; i++){
+                    myRows.push(oRows[i]);
+                }
+                myRows.sort(function(tr1,tr2){
+                    var n1 = parseInt(tr1.cells[2].innerHTML);
+                    var n2 = parseInt(tr2.cells[2].innerHTML);
+                    return n1 - n2;
+                });
+                for(var j = 0; j < myRows.length; j++){
+                    oTable.tBodies[0].appendChild(myRows[j]);
+                }
+               // oTable.tBodies[0].appendChild(myRows);//为什么不能这样用呢？数组里面的元素存储的才是文档，可以通过遍历来取
+                //直接这样族谱是不成功的！！！切记！！！
+            };
+
+
+        }
+    </script>
+</head>
+<body>
+<div>
+    <p>按照年龄排序，点击排序按钮后，完成排序</p>
+<input type="button" id="btn" value="排序" />
+<table id="table">
+
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>name</th>
+        <th>age</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>1</td>
+        <td>young</td>
+        <td>40</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>王四</td>
+        <td>20</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>张三</td>
+        <td>32</td>
+    </tr><tr>
+        <td>4</td>
+        <td>李四</td>
+        <td>23</td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>王五</td>
+        <td>29</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+</body>
+</html>

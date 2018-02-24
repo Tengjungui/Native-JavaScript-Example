@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>图片轮换</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #box{
+            width: 711px;
+            height: 342px;
+            position: relative;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+        #links a{
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 1;
+
+        }
+        #links a.active{
+            z-index: 2;
+        }
+        #bar{
+            overflow: hidden;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            z-index: 10;
+            width: 100%;
+            background-color: #d4d4d4;
+        }
+        #bar ul li{
+            width: 177px;
+            height: 40px;
+
+            float: left;
+            font: 15px "Microsoft YaHei";
+            text-align: center;
+            list-style-type: none;
+            line-height: 40px;
+            color: #ffffff;
+        }
+        li + li{
+            border-left:1px solid #eeeeee;
+        }
+        li.active{
+            background-color: rgba(170, 8, 13, 0.42);
+        }
+    </style>
+    <script>
+        function getStyle(obj, name)
+        {
+            if(obj.currentStyle)
+            {
+                return obj.currentStyle[name];
+            }
+            else
+            {
+                return getComputedStyle(obj, false)[name];
+            }
+        }
+
+        function startMove(obj,attr,target){
+            clearInterval(obj.timer);
+
+            obj.timer = setInterval(function(){
+                var current;
+                if(attr == "opacity"){
+                    //IE下opacity无法使用，filter
+                    current = Math.round(parseFloat(getStyle(obj,"opacity"))*100);//考虑到float运算
+                }
+                else{
+                    current = parseInt(getStyle(obj,attr));
+                    //alert("aa");
+                }
+
+                var speed = (target - current) / 6;
+                //对speed取整
+                speed = (speed > 0 ? Math.ceil(speed) : Math.floor(speed));
+                if(current == target){
+                    clearInterval(obj.timer);
+                }
+                else{
+                    //继续执行
+                    if(attr == "opacity"){
+                        obj.style.opacity = (current + speed) / 100;
+                        //兼容IE
+                        obj.style.filter='alpha(opacity:'+(current + speed)+')';
+                    }
+                    else{
+                        //不要忘记 +px
+                        obj.style[attr]= current + speed + "px";
+                        //alert("aa");
+                    }
+                }
+            },30);
+        }
+        window.onload = function(){
+            var box = document.getElementById("box");
+            var oImg = box.getElementsByTagName("img");
+            var oLi = box.getElementsByTagName("li");
+            var now = 0;       //播放到哪里了
+            var prev; //记录上一张图片的位置
+
+            var picLen = oLi.length;//图片的数量，直接来获取
+            for(var i = 0; i < picLen; i++){
+                oLi[i].index = i;
+                oLi[i].onmouseover = function(){
+                    prev = now;
+                    //是否重复点击
+                    if(now == this.index){return;}
+                    //更新Now值
+                    now = this.index;
+                    //对图片以及描述栏进行初始化
+                    tab();
+                }
+            }//end for
+            //定义自动播放函数
+            function auto(){
+                prev = now;
+                now++;
+                if(now >= picLen){
+                    now = 0;
+                }
+                tab();
+            }
+            var timer = setInterval(auto, 3000);
+            box.onmouseover = function(){
+                clearInterval(timer);
+            };
+            box.onmouseout = function(){
+                timer = setInterval(auto, 3000);
+            };
+            //定义切换函数
+            function tab(){
+                for(var j = 0; j < picLen; j++){
+                    oImg[j].parentNode.className = "";
+                    oLi[j].className = "";
+                    oImg[j].parentNode.style.zIndex = 1;
+                }
+                oImg[now].parentNode.className = "active";
+                oLi[now].className = "active";
+
+                oImg[prev].parentNode.style.zIndex = 2;
+                oImg[now].parentNode.style.zIndex = 3;
+                startMove(oImg[prev].parentNode,"opacity",0);
+                startMove(oImg[now].parentNode,"opacity",100);
+            }
+
+//            //定时播放
+//            var timer = setInterval(auto,3000);
+//            //立即调用该函数
+//            timer();
+//            box.onmouseover = clearInterval(timer);
+//            box.onmouseout = function(){
+//                timer = setInterval(auto,3000);
+//            };
+
+//            for(var i = 0; i < oBar.length; i++){
+//                oBar.index = i;
+//                oBar[i].onmouseover = function(){
+//                    now = this.index;
+//                    fadeTo();
+//                }
+//            }
+//
+//            function auto(){
+//                now++;
+//                //判别一下
+//                if(now == oImg.length){
+//                    now = 0;
+//                }
+//                fadeTo();
+//            }//end auto
+//
+//            function fadeTo(){
+//                for(var i = 0; i < oImg.length; i++){
+//                    fade(oImg[i],0);
+//                    oBar[i].className = ""
+//                }
+//                fade(oImg[now],100);
+//                oBar[now].className ="active";
+//            }//end fadeTo
+//
+//            function fade(obj ,target){
+//                //clearInterval(obj.timer);
+//                var step = -10;
+//                if(target == 100){
+//                    step = 10;
+//                }
+//                var current = parseInt( getStyle(obj,'opacity') * 100 );
+//
+//                var timer1 = setInterval(function(){
+//
+//
+//                    //var step =  (target - current) / 8;
+//                    //step = step > 0? Math.ceil(step) : Math.floor(step);//避免step = 0;
+//
+//                    if(target == current){
+//                        clearInterval(timer1);
+//                    }
+//                    else{
+//                        current += step;
+//                        obj.style.opacity = current / 100;
+//                        //debugger;
+//                        //alert(current / 100);
+//                    } // end else
+//                },30);
+//            }// fend fade
+
+        };  // onload
+    </script>
+</head>
+<body>
+    <div id="box">
+        <div id="links">
+        <a class="active"><img src="slide/1.jpg" />
+        <a><img src="slide/2.jpg" />
+        <a><img src="slide/3.jpg" />
+        <a><img src="slide/4.jpg" />
+        </div>
+        <div id="bar">
+            <ul>
+                <li class="active">聚蟹客 中秋好礼</li>
+                <li>赚网 相思惠明月</li>
+                <li>草莓网 彩妆大促</li>
+                <li >中秋送礼 浓情促销</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>我的作品</title>
+    </head>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family:"微软雅黑";
+        }
+        div{
+            width: 350px;
+            margin: 20px auto;
+            border: 10px solid rgba(212, 212, 212, 0.72);
+            border-radius: 9px;
+            background: rgba(212, 212, 212, 0.25);
+        }
+
+        li{
+            list-style-type: none;
+        }
+        div li h2{
+            font-size: 20px;
+            line-height: 45px;
+        }
+        div li h2:hover{
+
+            background: -webkit-linear-gradient(to top, #70addd, #999aff);
+            background: -o-linear-gradient(to top, #70addd, #999aff);
+            background: -moz-linear-gradient(to top, #70addd, #999aff);
+            background: linear-gradient(to top, #70addd, #999aff);
+            cursor: pointer;
+        }
+        div li dl{
+            height: 0;
+            overflow: hidden;
+        }
+        div li dl dd{
+            margin-left: 20px;
+        }
+        div li dl a{
+            display: block;
+            text-decoration: none;
+        }
+    </style>
+    <script>
+        function startMove(obj,attr,target){
+            clearInterval(obj.timer);
+
+            obj.timer = setInterval(function(){
+                var current;
+                if(attr == "opacity"){
+                    //IE下opacity无法使用，filter
+                    current = Math.round(parseFloat(getStyle(obj,"opacity"))*100);//考虑到float运算
+                }
+                else{
+                    current = parseInt(getStyle(obj,attr));
+                    //alert("aa");
+                }
+
+                var speed = (target - current) / 6;
+                //对speed取整
+                speed = (speed > 0 ? Math.ceil(speed) : Math.floor(speed));
+                if(current == target){
+                    clearInterval(obj.timer);
+                }
+                else{
+                    //继续执行
+                    if(attr == "opacity"){
+                        obj.style.opacity = (current + speed) / 100;
+                        //兼容IE
+                        obj.style.filter='alpha(opacity:'+(current + speed)+')';
+                    }
+                    else{
+                        //不要忘记 +px
+                        obj.style[attr]= current + speed + "px";
+                        //alert("aa");
+                    }
+                }
+            },30);
+        }
+        function getStyle(obj, name)
+        {
+            if(obj.currentStyle)
+            {
+                return obj.currentStyle[name];
+            }
+            else
+            {
+                return getComputedStyle(obj, false)[name];
+            }
+        }
+        window.onload = function(){
+            var oUl = document.getElementsByTagName("ul")[0];
+            var oH2 = oUl.getElementsByTagName("h2");
+            var oDl = oUl.getElementsByTagName("dl");
+            for(var i = 0; i < oH2.length; i++){
+                oH2[i].index = i;
+
+                oH2[i].onclick = function(){
+                    // alert(this.index);
+                    if(this.className == "on"){
+                        this.className = "";
+                        startMove(oDl[this.index],"height",0);
+                    }
+                    else{
+                        //alert(this.index);
+                        var oDd = oDl[this.index].getElementsByTagName("dd");
+                        var oDdLen = oDd.length;
+                        //alert(oDdLen);
+                        var height = getStyle(oDd[0],"height");
+                        this.className ="on";
+                        startMove(oDl[this.index],"height",oDdLen*oDd[0].offsetHeight);
+
+                    }//end else
+                }
+
+            }//end for
+
+        }
+    </script>
+    <body>
+    <div>
+        <ul>
+            <li>
+                <h2>表单常用代码</h2>
+                <dl>
+                    <dd>
+                        <a href="practice/clearSpace.html" target="view_window">去除字符串空格</a>
+                    </dd>
+                    <dd>
+                        <a href="practice/vertification.html" target="view_window">验证用户是否输入</a>
+                    </dd>
+                    <dd>
+                        <a href="practice/noInput.html" target="view_window">禁止输入</a>
+                    </dd>
+                    <dd>
+                        <a href="practice/numOnly.html" target="view_window">限制只能输入数字</a>
+                    </dd>
+                    <dd>
+                        <a href="practice/noPaste.html" target="view_window">禁止用户复制粘贴</a>
+                    </dd>
+
+                    <dd>
+                        <a href="practice/search.html" target="view_window">文本搜索</a>
+                    </dd>
+                    <dd>
+                        <a href="practice/sort.html" target="view_window">简单的排序</a>
+                    </dd>
+                </dl>
+            </li>
+            <li>
+                <h2>常用图片与内容展示效果</h2>
+                <dl>
+                    <dd>
+                        <a href="practice/changeOpacity.html" target="view_window">网页广告效果</a>
+                    </dd>
+                    <dd>
+                        <a href="practice/magnifier.html" target="view_window">图片放大镜</a>
+                    </dd>
+                    <dd>
+                        <a href="practice/colorChange.html" target="view_window">鼠标经过变色</a>
+                    </dd>
+                    <dd>
+                        <a href="practice/picClock.html" target="view_window">图片时钟</a>
+                    </dd>
+                </dl>
+            </li>
+            <li>
+                <h2>常见图片转换</h2>
+                <dl>
+                    <dd>
+                        <a href="practice/picChange.html" target="view_window">图片轮转</a>
+                    </dd>
+                    <dd>
+                        <a href="practice/picChange2.html" target="view_window">图片轮换2</a>
+                    </dd>
+                    <dd>
+                        <a href="practice/xiaomi.html" target="view_window">仿FLASH图片切换</a>
+                    </dd>
+                    <dd>
+                        <a href="practice/slideShow.html" target="view_window">百度爱玩-图片下拉</a>
+                    </dd>
+                    <dd>
+                        <a href="practice/CSSpop.html" target="view_window">css3弹出层</a>
+                    </dd>
+                    <dd>
+                        <a href="practice/tabchange.html" target="view_window">tab切换</a>
+                    </dd>
+                    <dd>
+                        <a href="practice/opacity.html" target="view_window">渐显TAB菜单</a>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+    </body>
+</html>

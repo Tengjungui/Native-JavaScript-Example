@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>CSS弹出层-一个简单的自我介绍</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        input {
+            border: none;
+            background: none;
+        }
+
+        #shadow {
+            width: 100%;
+            height: 100%;
+            background: black;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            opacity: .5;
+        }
+
+        #btn1 {
+            width: 180px;
+            font: 20px/2 "Microsoft YaHei";
+            background: #0099FF;
+            color: #FFF;
+            margin: 200px auto;
+            display: block;
+        }
+
+        .warp {
+            width: 400px;
+            height: 200px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -201px;
+            margin-top: -101px;
+            border: #09F solid 1px;
+            display: none;
+            background-color: #FFF;
+        }
+
+        .title {
+            overflow: hidden;
+        }
+
+        .title h3 {
+            font: 14px/40px "Microsoft YaHei";
+            padding-left: 10px;
+            float: left;
+        }
+
+        .flicker_01 {
+            background: #09F;
+        }
+
+        .flicker_02 {
+            background: #7D7DFF;
+        }
+
+        .content {
+            font: 14px/1.5 "Microsoft YaHei";
+            padding: 10px;
+        }
+
+        .content h3 {
+            font-size: 14px;
+        }
+
+        #btn2{
+            height: 20px;
+            width: 20px;
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background: url("csspop/btn.png") no-repeat ;
+            background-size: 20px 20px;
+        }
+    </style>
+    <script>
+        window.onload=function (){
+            var oButton = document.getElementById("btn1");
+            var oShadow = document.getElementById("shadow");
+            var oDiv = document.getElementById("div1");
+            var oClose = document.getElementById("btn2");
+            oButton.onclick = function(){
+
+                oShadow.style.display = "block";
+                oDiv.style.display = "block";
+
+            };
+            oClose.onclick = function(){
+                oShadow.style.display = "none";
+                oDiv.style.display = "none";
+            };
+            var filter = document.getElementsByClassName("flicker_01")[0];
+            /*function changeClass(){
+             if(filter.className == "flicker_01"){
+             filter.className = "flicker_02";
+             }
+             else{
+             filter.className = "flicker_01";
+             }
+             }
+             var oTime = setInterval(changeClass,100);
+             oShadow.onclick = oTime;*/
+
+
+            oShadow.onclick=function ()
+            {
+                var i=0;
+                //先清楚，避免不必要的问题出现
+                clearInterval(timer);
+
+                var timer=setInterval(function (){
+                    i++;
+
+                    if(i%2)
+                    {
+                        filter.className='title flicker_02';
+                    }
+                    else
+                    {
+                        filter.className='title flicker_01';
+                    }
+                    //闪烁之后，清除
+                    if(i==6)
+                    {
+                        clearInterval(timer);
+                    }
+                }, 80);
+            };
+        }
+    </script>
+</head>
+
+<body>
+<input type="button" value="打开我的自我介绍" id="btn1" />
+<div id="shadow"></div>
+<div class="warp" id="div1">
+    <a href="#" id="btn2"></a>
+    <div class="title flicker_01">
+        <h3>个人自我介绍</h3>
+    </div>
+    <div class="content">
+        <h3>邓芷阳</h3>
+        <p>上海海事大学 文理学院 工业设计 大三学生</p>
+        <h3>邮箱</h3>
+        <p>dengzhiyang123@126.com</p>
+        <h3>电话</h3>
+        <p>13761737972</p>
+    </div>
+</div>
+</body>
+</html>

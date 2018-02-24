@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>鼠标经过变色</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        table{
+            width: 150px;
+            height: 200px;
+            margin: 20px auto;
+            text-align: center;
+            word-spacing: 0;
+            border: 1px solid #333333;
+
+        }
+        table th {
+            border-left: 1px solid #ccc;
+            border-top: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        table th{
+            background-color: #dce9f9;
+            background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+            background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+            background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+            background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+            background-image: -o-linear-gradient(to top, #ebf3fc, #dce9f9);
+            background-image: linear-gradient(to top, #ebf3fc, #dce9f9);
+        }
+        table td:first-child,
+        table th:first-child {
+            border-left: none;
+
+        }
+        table tbody tr:nth-child(2n+1){
+            background-color: #0088dd;
+        }
+        table tbody tr:hover{
+            background-color: #d6e636;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>name</th>
+            <th>age</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>young</td>
+                <td>30</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>杨洋</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>张三</td>
+                <td>32</td>
+            </tr><tr>
+                <td>4</td>
+                <td>李四</td>
+                <td>30</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>王五</td>
+                <td>29</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

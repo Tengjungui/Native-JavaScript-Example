@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>表格搜索</title>
+    <style>
+        div{
+            width:260px;
+            margin: 50px auto;
+        }
+    </style>
+    <script>
+        window.onload = function(){
+            var oSearch = document.getElementById("search");
+            var oBtn = document.getElementById("btn");
+            var oRows = document.getElementsByTagName("table")[0].tBodies[0].rows;
+            //alert(oRows.length);
+
+            oBtn.onclick = function(){
+                var value = oSearch.value.toLowerCase();
+
+                var keyWords = value.split(" ");
+                //alert(keyWords.length);
+                if(!keyWords){
+                    alert("无输入");
+                    return false;
+                }
+               for(var i = 0; i < oRows.length; i++){
+                   //alert(oRows[i].cells[1].innerHTML);
+                    var txt = oRows[i].cells[1].innerHTML.toLowerCase();
+                   for(var j = 0; j < keyWords.length; j++){
+
+                       if(txt.search(keyWords[j]) != -1){
+                           oRows[i].style.background = "yellow";
+                       }
+                       else{
+                           oRows[i].style.backgroundColor = "";
+                       }
+                   }//for inner
+                }// for outer
+            };//oBtn.onclick
+            //总结：cells，记住了，innerHTML方法获取元素的值方便快捷
+            //if 与 else 关系
+        };
+
+
+    </script>
+</head>
+<body>
+<div>
+    <p>检索名字。</p>
+    <p>检索多个关键字时，用空格隔开。</p>
+    <p>检索到的，背景变为黄色。</p>
+<input type="search" id="search" />
+<input type="button" id="btn" value="搜索" />
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>name</th>
+        <th>age</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>1</td>
+        <td>young</td>
+        <td>30</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>王四</td>
+        <td>20</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>张三</td>
+        <td>32</td>
+    </tr><tr>
+        <td>4</td>
+        <td>李四</td>
+        <td>30</td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>王五</td>
+        <td>29</td>
+    </tr>
+    </tbody>
+</table>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>网页广告效果</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            height: 2000px;
+        }
+        #div1{
+            width: 100px;
+            height: 200px;
+            position: absolute;
+            background: rgba(0, 136, 221, 0.73);
+            border-radius: 10px;
+            right: 0;
+            top:233px;
+        }
+
+    </style>
+    <script>
+        window.onscroll = function(){
+            var oDiv = document.getElementById("div1");
+            var oScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+
+            //oDiv.style.top = parseInt( (document.documentElement.clientHeight -oDiv.offsetHeight)/2 + oScrollTop) + "px";
+            var targetTop = parseInt( (document.documentElement.clientHeight -oDiv.offsetHeight)/2 + oScrollTop);
+            startMove(targetTop);
+        };//只要鼠标滚动立即调用该事件，不想onload事件只执行一次
+        //offsetHeight或者其他都是数字，不带"px"，使用时需要注意
+
+        var timer = null;
+        function startMove(target){
+            clearInterval(timer);
+            var oDiv = document.getElementById("div1");
+            timer = setInterval(function(){
+                var speed = ( target - oDiv.offsetTop) / 6;
+                speed = ( speed > 0 ? Math.ceil(speed):Math.floor(speed) );
+                if(oDiv.offsetTop != target){
+                    oDiv.style.top = oDiv.offsetTop + speed + "px";
+                }
+                else{
+                    clearInterval(timer);
+                }
+            },30)
+        }
+    </script>
+</head>
+<body>
+    <div id="div1">
+        <h2>这里是广告</h2>
+    </div>
+</body>
+</html>

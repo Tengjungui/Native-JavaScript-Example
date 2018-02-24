@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>百度爱玩-下拉图片</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #container{
+            width: 558px;
+            margin: 10px auto;
+            overflow: hidden;
+            text-align: center;
+        }
+        #container > div{
+            float: left;
+            border-width: 10px 0 10px 10px;
+            border-style: solid;
+            border-color: rgba(204, 204, 204, 0.66);
+            position: relative;
+            overflow: hidden;
+        }
+        #container > div:last-child{
+            border-right: 10px solid rgba(204, 204, 204, 0.66);
+        }
+        #container div div{
+            position: absolute;
+            background: rgba(204, 204, 204, 0.93);
+            left: 0;
+            top: 0;
+            z-index: 10;
+            width: 166px;
+            height: 0;
+        }
+        #container div div h2{
+            position: absolute;
+            bottom: 20px;
+            left: 10px;
+            background: linear-gradient(to top, #aa543d, #aa6441);
+            border-radius: 3px;
+            z-index: 12;
+            cursor: pointer;
+        }
+    /*定位中有趣的事：绝对定位，开始位置不是border.
+    */
+    </style>
+    <script>
+        function getStyle(obj, name)
+        {
+            if(obj.currentStyle)
+            {
+                return obj.currentStyle[name];
+            }
+            else
+            {
+                return getComputedStyle(obj, false)[name];
+            }
+        }
+
+        function startMove(obj,attr,target){
+            clearInterval(obj.timer);
+
+            obj.timer = setInterval(function(){
+                var current;
+                if(attr == "opacity"){
+                    //IE下opacity无法使用，filter
+                    current = Math.round(parseFloat(getStyle(obj,"opacity"))*100);//考虑到float运算
+                }
+                else{
+                    current = parseInt(getStyle(obj,attr));
+                    //alert("aa");
+                }
+
+                var speed = (target - current) / 6;
+                //对speed取整
+                speed = (speed > 0 ? Math.ceil(speed) : Math.floor(speed));
+                if(current == target){
+                    clearInterval(obj.timer);
+                }
+                else{
+                    //继续执行
+                    if(attr == "opacity"){
+                        obj.style.opacity = (current + speed) / 100;
+                        //兼容IE
+                        obj.style.filter='alpha(opacity:'+(current + speed)+')';
+                    }
+                    else{
+                        //不要忘记 +px
+                        obj.style[attr]= current + speed + "px";
+                        //alert("aa");
+                    }
+                }
+            },30);
+        }
+        window.onload = function(){
+            var container = document.getElementById("container");
+            var oDiv = container.children;
+            //alert(oDiv.length);
+            for(var i = 0; i < oDiv.length; i++){
+                oDiv[i].index = i;
+
+                oDiv[i].onmouseover = function(){
+
+                    var myDiv = this.getElementsByTagName("div")[0];//[0]不要忘记
+
+                    startMove(myDiv,"height",oDiv[this.index].offsetHeight);//oDiv是数组，不可以胡乱使用
+                };
+                oDiv[i].onmouseout = function(){
+                    var myDiv = this.getElementsByTagName("div")[0];//[0]不要忘记
+                    startMove(myDiv,"height",0);
+                };
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="container">
+        <div>
+            <img src="baiduslide/1.jpg" />
+            <h2>大天使之剑</h2>
+            <div>
+                <h2>开始游戏</h2>
+            </div>
+        </div>
+        <div>
+            <img src="baiduslide/2.jpg" />
+            <h2>神剑online</h2>
+            <div>
+                <h2>开始游戏</h2>
+            </div>
+        </div>
+        <div>
+            <img src="baiduslide/3.jpg" />
+            <h2>魅影传说</h2>
+            <div>
+                <h2>开始游戏</h2>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

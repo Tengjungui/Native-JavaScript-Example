@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>禁止输入（使用JS控制）</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #formWrapper{
+            width: 450px;
+            border-radius: 10px;
+            border: 1px solid #eeeeee;
+            background-image: -webkit-linear-gradient(top, #f6f6f6, #eae8e8);
+            background-image: -moz-linear-gradient(top, #f6f6f6, #eae8e8);
+            background-image: -ms-linear-gradient(top, #f6f6f6, #eae8e8);
+            background-image: -o-linear-gradient(top, #f6f6f6, #eae8e8);
+
+            background-image: linear-gradient(top, #f6f6f6, #eae8e8);
+            box-shadow: 0 3px 3px rgba(255,255,255,.1), 0 3px 0 #bbb, 0 4px 0 #aaa, 0 5px 5px #444;
+            background-color: #444; /*防止渐变无法使用*/
+            margin: 20px auto;
+            padding: 10px;
+            overflow: hidden;
+        }
+        #formWrapper #search{
+            width: 320px;
+            height: 40px;
+            box-shadow: 0 1px 1px #ddd inset, 0 1px 0 #fff;
+            float: left;
+            font-size: 30px;
+            line-height: 40px;
+        }
+        #formWrapper #submitBtn{
+            width: 100px;
+            height: 42px;
+            border:1px solid #0088dd;
+            border-radius: 5px;
+            text-shadow: 2px 2px 0 #0088dd;
+            background-color:#0088dd ;
+            font-size: 15px;
+            text-transform: uppercase;
+            background-image: -webkit-linear-gradient(top, #31b2c3, #0483a0);
+            background-image: -moz-linear-gradient(top, #31b2c3, #0483a0);
+            background-image: -ms-linear-gradient(top, #31b2c3, #0483a0);
+            background-image: -o-linear-gradient(top, #31b2c3, #0483a0);
+
+            background-image: linear-gradient(to bottom,#31b2c3,#0483a0);
+            float: right;
+        }
+        #formWrapper #submitBtn:hover{
+            background-image: -webkit-linear-gradient(top, #31b2c3, #0483a0);
+            background-image: -moz-linear-gradient(top, #31b2c3, #0483a0);
+            background-image: -ms-linear-gradient(top, #31b2c3, #0483a0);
+            background-image: -o-linear-gradient(top, #31b2c3, #0483a0);
+            background-image: linear-gradient(to top,#31b2c3,#0483a0);
+        }
+    </style>
+
+    <script>
+        window.onload = function(){
+            var search = document.getElementById("search");
+            search.onfocus = function(){
+                search.blur();
+            }
+        }
+    </script>
+</head>
+<body>
+<form id="formWrapper">
+    <div class="fomField">
+        <input type="text" id="search" value="使用blur()函数失焦" />
+        <input type="button" id="submitBtn" value="change"/>
+    </div>
+</form>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>tab切换</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #container{
+            width: 300px;
+            margin: 10px auto;
+            border: 2px solid #777777;
+            border-top: none;
+            border-radius:3px ;
+        }
+        #title{
+            width: 100%;
+            height: 30px;
+        }
+        #title h2{
+            width: 50%;
+            line-height: 30px;
+            float: left;
+            text-align: center;
+            border-top: 4px solid #777777;
+            background-image: -webkit-linear-gradient(to top, rgba(124, 115, 108, 0.71),#d4d4d4);
+            background-image: -moz-linear-gradient(to top, rgba(124, 115, 108, 0.71),#d4d4d4);
+            background-image: -o-linear-gradient(to top, rgba(124, 115, 108, 0.71),#d4d4d4);
+            background-image: linear-gradient(to top, rgba(124, 115, 108, 0.63),#d4d4d4);
+        }
+        #title h2.active{
+            background-image: none;
+            border-top: 4px solid orangered;
+        }
+        #content ul{
+            width: 300px;
+            left: 0;
+            top: 0;
+            display: none;
+        }
+        #content ul.active{
+            display: block;
+        }
+        #content ul li{
+            list-style-type: none;
+            margin: 10px 0;
+        }
+        #content ul li + li{
+            border-top: 2px dotted #777777;
+        }
+        #content ul li span{
+            margin: 0 10px;
+            display: inline-block;
+            font-size: 20px;
+            line-height: 25px;
+            float: left;
+        }
+       #content ul li h3{
+            line-height: 25px;
+            font-size: 20px;
+           width: 200px;
+        }
+        #content ul li.active div{
+            display: block;
+        }
+        #content ul li div{
+            overflow: hidden;
+            clear: both;
+            margin: 10px ;
+            display: none;
+        }
+        #content ul li div img{
+            float: left;
+            margin-right: 10px;
+
+        }
+        #content ul li div a{
+            text-decoration: none;
+            font-size: 20px;
+            line-height: 25px;
+            color: #ffffff;
+            background-color: orangered;
+        }
+
+    </style>
+    <script>
+        window.onload = function(){
+            var title = document.getElementById("title");
+            var oH2 = title.getElementsByTagName("h2");
+            var content = document.getElementById("content");
+            var oUl = content.getElementsByTagName("ul");
+            var myength = oH2.length;
+            //alert(myength);
+            for(var i = 0; i < myength; i++){
+                oH2[i].index = i;
+                oH2[i].onmouseover = function(){
+                    for(var j = 0; j < myength; j++){
+                        oH2[j].className = "";
+                        oUl[j].className = "";
+                    }
+                    oH2[this.index].className = "active";
+                    oUl[this.index].className = "active";
+                    hover(oUl[this.index]);
+
+                };//onmouseover
+            }//end for
+            function hover(ul){
+                var oLi = ul.getElementsByTagName("li");
+                for(var i = 0; i < oLi.length; i++){
+                    oLi[i].index = i;
+                    oLi[i].onmouseover = function(){
+                        for(var j = 0; j < oLi.length; j++){
+                            oLi[j].className = "";
+                        }
+                        oLi[this.index].className = "active";
+                    }
+                }//end for
+
+            }//end hover
+        }
+    </script>
+</head>
+<body>
+<div id="container">
+    <div id="title">
+        <h2 class="active">安卓榜单</h2>
+        <h2>IOS榜单</h2>
+    </div>
+    <div id="content">
+        <ul class="active">
+            <li class="active">
+                <span>1</span><h3>魔力宝贝</h3>
+                <div>
+                    <img src="tabchange/1.jpg" />
+                    <p>人气：11222</p>
+                    <p>类型：角色扮演</p>
+                    <a href="#">下载</a>
+                </div>
+            </li>
+            <li>
+                <span>2</span><h3>魔力宝贝</h3>
+                <div>
+                    <img src="tabchange/1.jpg" />
+                    <p>人气：11222</p>
+                    <p>类型：角色扮演</p>
+                    <a href="#">下载</a>
+                </div>
+            </li>
+            <li>
+                <span>3</span><h3>魔力宝贝</h3>
+                <div>
+                    <img src="tabchange/1.jpg" />
+                    <p>人气：11222</p>
+                    <p>类型：角色扮演</p>
+                    <a href="#">下载</a>
+                </div>
+            </li>
+            <li>
+                <span>4</span><h3>魔力宝贝</h3>
+                <div>
+                    <img src="tabchange/1.jpg" />
+                    <p>人气：11222</p>
+                    <p>类型：角色扮演</p>
+                    <a href="#">下载</a>
+                </div>
+            </li>
+            <li>
+                <span>5</span><h3>魔力宝贝</h3>
+                <div>
+                    <img src="tabchange/1.jpg" />
+                    <p>人气：11222</p>
+                    <p>类型：角色扮演</p>
+                    <a href="#">下载</a>
+                </div>
+            </li>
+        </ul>
+
+        <ul>
+            <li class="active">
+                <span>1</span><h3>时空猎人</h3>
+                <div>
+                    <img src="tabchange/1.jpg" />
+                    <p>人气：23333</p>
+                    <p>类型：角色扮演</p>
+                    <a href="#">下载</a>
+                </div>
+            </li>
+            <li>
+                <span>2</span><h3>时空猎人</h3>
+                <div>
+                    <img src="tabchange/1.jpg" />
+                    <p>人气：23333</p>
+                    <p>类型：角色扮演</p>
+                    <a href="#">下载</a>
+                </div>
+            </li>
+            <li>
+                <span>3</span><h3>时空猎人</h3>
+                <div>
+                    <img src="tabchange/1.jpg" />
+                    <p>人气：23333</p>
+                    <p>类型：角色扮演</p>
+                    <a href="#">下载</a>
+                </div>
+            </li>
+            <li>
+                <span>4</span><h3>时空猎人</h3>
+                <div>
+                    <img src="tabchange/1.jpg" />
+                    <p>人气：23333</p>
+                    <p>类型：角色扮演</p>
+                    <a href="#">下载</a>
+                </div>
+            </li>
+            <li>
+                <span>5</span><h3>时空猎人</h3>
+                <div>
+                    <img src="tabchange/1.jpg" />
+                    <p>人气：23333</p>
+                    <p>类型：角色扮演</p>
+                    <a href="#">下载</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

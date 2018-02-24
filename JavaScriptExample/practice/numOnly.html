@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>限制只能输入数字</title>
+    <script>
+        window.onload = function() {
+            var onlyNum = document.getElementById("onlyNum");
+
+            function clear(input) {
+                var oValue = input.value;
+                input.value = oValue.replace(/\D/g, "");
+            }
+
+            onlyNum.onkeyup = function(){clear(onlyNum)};
+
+            onlyNum.onblur = function(){clear(onlyNum)};
+            onlyNum.onfocus = function(){clear(onlyNum)};
+        };//onload
+    </script>
+</head>
+<body>
+<form>
+    <h2>只能输入数字</h2>
+    <input type="text" id="onlyNum" />
+</form>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>禁止复制和粘贴</title>
+</head>
+<body>
+    <h2>禁止复制和粘贴</h2>
+    <input type="text" id="noPaste" />
+</body>
+    <script>
+        var paste = document.getElementById("noPaste");
+        paste.oncopy = function(){
+            return false;
+        };
+        paste.onpaste = function(){
+            return false;
+        }
+    </script>
+</html>
